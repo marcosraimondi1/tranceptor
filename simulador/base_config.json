@@ -13,10 +13,10 @@
       },
       
       "channel" : {
-         "fc": 0.8,
+         "fc": 0.6,
          "N": 4,
          "select_orden": 2,
-         "EbNo":10,
+         "EbNo":8,
          "carrier_error_type": "frequency",
          "carrier_error": 100e6,
          "debug":0
@@ -24,25 +24,25 @@
       
       "receptor": {
          "FSE":{
-            "CMA_timer": 50e3,
+            "CMA_timer": 40e3,
             "CMA_FCR_timer": 50e3,
-            "NTAPS": 101,
-            "leak_const": 2.5e-7,
-            "refresh_rate": 3000,
-            "learning_step": 0.5e-3,
+            "NTAPS": 27,
+            "leak_const": 1.5e-7,
+            "refresh_rate": 5000,
+            "learning_step": 0.1e-3,
             "Kp": 0.1,
             "Ki": 0.005,
             "L": 1,
             "debug": 1
          },
          "agc_target": 1,
-         "crop_percentage":50,
+         "crop_percentage":40,
          "debug":0
       }
 
    },
    "test":{
-      "frameSize":1e6,
+      "frameSize":8e5,
       "fileName":"ber.dat",
       "folderName":"results/M%i_EbNo%idB_rolloff_%.1f"
    }
