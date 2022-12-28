@@ -77,62 +77,46 @@ for n=1:length(signal)-NTAPS-1
         m = m + 1;
         EQ_OUT(m) = yeq;
 
-        if CMA_timer > 0
+        if CMA_timer < 0
+            % FCR
+            phase_out(m) = FCR_Buffer(1);   % salida de fase
+            rot = exp(-1j*phase_out(m));    % rotador
+            y_fcr = yeq*rot;                % salida rotada
+            EQ_OUT(m) = y_fcr;
+
+            SLICER_OUT(m) = slicer(y_fcr,a);
+            % phase detector
+            phase_error = asin(imag(y_fcr*conj(SLICER_OUT(m)))/abs(SLICER_OUT(m))^2); 
+            % loop filter
+            error_p = Kp*phase_error;           % error proporcional
+            error_i = error_i + phase_error*Ki; % error integral
+            error_total = error_p + error_i;    % error total
+            % NCO
+            theta_out = theta_out + error_total;% fase de salida
+            % Feedback
+            FCR_Buffer = [FCR_Buffer(2:end),theta_out];
+
+            if CMA_FCR_timer < 0
+                % DD ERROR + FCR ON
+                ek =  SLICER_OUT(m) - y_fcr;
+                ek = ek * rot^-1;
+            else
+                % CMA ERROR + FCR ON
+                CMA_FCR_timer = CMA_FCR_timer - 1;
+                ek = -yeq * (abs(yeq) - CMA_R);
+            end
+
+        else
             % CMA ERROR + FCR OFF
             CMA_timer = CMA_timer - 1;
             ek = -yeq * (abs(yeq) - CMA_R);
             SLICER_OUT(m) = slicer(yeq,a);
-
-
-        elseif CMA_FCR_timer > 0
-            % CMA ERROR + FCR ON
-            CMA_FCR_timer = CMA_FCR_timer - 1;
-            ek = -yeq * (abs(yeq) - CMA_R);
-            
-            % FCR
-            phase_out(m) = FCR_Buffer(1);   % salida de fase
-            rot = exp(-1j*phase_out(m));    % rotador
-            y_fcr = yeq*rot;                % salida rotada
-            EQ_OUT(m) = y_fcr;
-
-            SLICER_OUT(m) = slicer(y_fcr,a);
-            % phase detector
-            phase_error = asin(imag(y_fcr*conj(SLICER_OUT(m)))/abs(SLICER_OUT(m))^2); 
-            % loop filter
-            error_p = Kp*phase_error;           % error proporcional
-            error_i = error_i + phase_error*Ki; % error integral
-            error_total = error_p + error_i;    % error total
-            % NCO
-            theta_out = theta_out + error_total;% fase de salida
-            % Feedback
-            FCR_Buffer = [FCR_Buffer(2:end),theta_out];
-        else  
-            % DD ERROR + FCR ON
-            % FCR
-            phase_out(m) = FCR_Buffer(1);   % salida de fase
-            rot = exp(-1j*phase_out(m));    % rotador
-            y_fcr = yeq*rot;                % salida rotada
-            EQ_OUT(m) = y_fcr;
-
-            SLICER_OUT(m) = slicer(y_fcr,a);
-            % phase detector
-            phase_error = asin(imag(y_fcr*conj(SLICER_OUT(m)))/abs(SLICER_OUT(m))^2); 
-            % loop filter
-            error_p = Kp*phase_error;           % error proporcional
-            error_i = error_i + phase_error*Ki; % error integral
-            error_total = error_p + error_i;    % error total
-            % NCO
-            theta_out = theta_out + error_total;% fase de salida
-            % Feedback
-            FCR_Buffer = [FCR_Buffer(2:end),theta_out];
-            
-            ek =  SLICER_OUT(m) - y_fcr;
-            ek = ek * rot^-1;
         end
         
         ERROR(m) = ek;
         % gradiente estocastico ek*conj(rk)
         grad = ek.*Xbuffer';
+        
     else
         % Upsample
         ek = 0;
@@ -145,14 +129,12 @@ for n=1:length(signal)-NTAPS-1
     % Para los plots en tiempo real
     if debug == 1 && mod(n,refresh_rate) == 0
         figure(3)
-        plot(real(EQ_OUT(1:end)), '.')
-        % plot(real(EQ_OUT(m-450:m)),imag(EQ_OUT(m-450:m)),'.')
+        % plot(real(EQ_OUT(1:end)), '.')
+        plot(real(EQ_OUT(m-450:m)),imag(EQ_OUT(m-450:m)),'.')
         grid on
         title("Live Constelation FSE OUT")
-        % xlim([-max_real-1 max_real+1])
+        xlim([-max_real-1 max_real+1])
         ylim([-max_imag-1 max_imag+1])
-        
-        
         
     end
 end
