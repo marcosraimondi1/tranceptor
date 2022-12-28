@@ -80,21 +80,14 @@ for n=1:length(signal)-NTAPS-1
         if CMA_timer < 0
             % FCR
             phase_out(m) = FCR_Buffer(1);   % salida de fase
-            rot = exp(-1j*phase_out(m));    % rotador
-            y_fcr = yeq*rot;                % salida rotada
-            EQ_OUT(m) = y_fcr;
+            
+            [y_fcr, rot, theta_out, error_i, slicer_out] = FCR(yeq,phase_out(m),theta_out,error_i,Kp,Ki,a);
 
-            SLICER_OUT(m) = slicer(y_fcr,a);
-            % phase detector
-            phase_error = asin(imag(y_fcr*conj(SLICER_OUT(m)))/abs(SLICER_OUT(m))^2); 
-            % loop filter
-            error_p = Kp*phase_error;           % error proporcional
-            error_i = error_i + phase_error*Ki; % error integral
-            error_total = error_p + error_i;    % error total
-            % NCO
-            theta_out = theta_out + error_total;% fase de salida
             % Feedback
             FCR_Buffer = [FCR_Buffer(2:end),theta_out];
+            
+            EQ_OUT(m) = y_fcr;
+            SLICER_OUT(m) = slicer_out;
 
             if CMA_FCR_timer < 0
                 % DD ERROR + FCR ON
@@ -116,7 +109,7 @@ for n=1:length(signal)-NTAPS-1
         ERROR(m) = ek;
         % gradiente estocastico ek*conj(rk)
         grad = ek.*Xbuffer';
-        
+
     else
         % Upsample
         ek = 0;
