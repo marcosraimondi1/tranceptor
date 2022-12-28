@@ -1,0 +1,26 @@
+{
+   "simulator":{
+      "M":4,
+      "NOSF":2,
+      "span":20,
+      "BR":16e9,
+      "rolloff":0.2,
+      "EbNo":5,
+      "NFFT":1024,
+      "crop_percentage":50,
+      "agc_target": 1,
+      "select_orden": 1,
+      "channelDigitalFc": 0.8,
+      "channelNTaps": 4,
+      "FSENTaps": 101,
+      "learning_step": 0.5e-3,
+      "leak_const": 2.5e-7,
+      "refresh_rate": 1000,
+      "debug":0
+   },
+   "test":{
+      "frameSize":1e5,
+      "fileName":"ber.dat",
+      "folderName":"results/M%i_EbNo%idB_rolloff_%.1f"
+   }
+}
