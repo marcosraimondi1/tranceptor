@@ -29,7 +29,7 @@ function [odata] = rx_qam_M(config)
     agc_out = AGC(r,agc_target);  
     %% ANTES 
 %     symbols = qammod(0:M-1,M);          % posibles simbolos a detectar
-%     a = [unique(real(symbols)); unique(imag(symbols))]; % parte real e imag de simbolos
+%     a = {unique(real(symbols)); unique(imag(symbols))}; % parte real e imag de simbolos
     %MF
 %     mf = flip(conj(filter_kernel));
 %     y = filter(mf,1,r);
