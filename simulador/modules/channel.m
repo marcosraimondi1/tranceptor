@@ -57,10 +57,16 @@ function [odata] = channel(config)
     
     %% 
     if select_orden == 1
-        out = r_out1;
+        noise_out = r_out1;
     else
-        out = r_out2;
+        noise_out = r_out2;
     end
+
+    % Carrier Error
+    carrier_error = config.carrier_error;
+    rot = exp(1j*carrier_error);
+    out = noise_out .* rot;
+
     %% PLOTS
     if config.debug == 1
         figure
@@ -82,8 +88,6 @@ function [odata] = channel(config)
         title("Channel Freq. Response")
     end
 
-    
-    
     %% OUTPUT
     odata.out = out;
     odata.SNR = SNR;
