@@ -2,21 +2,21 @@ function ak = slicer(yk,a)
 %SLICER toma de decision para qamM
 % Argumentos: 
 %            yk -> symbol input
-%            a  -> array con [parte real , parte imag] 
-%               ej: para qam4: a = [ [-1 1] ; [-1 1] ]
+%            a  -> cell array con {[parte real] , [parte imag]} 
+%               ej: para qam4: a = { [-1 1] ; [-1 1] }
 %   symbols = qammod(0:M-1,M); 
-%   a = [unique(real(symbols)), unique(imag(symbols))]
+%   a = {unique(real(symbols)), unique(imag(symbols))}
 
     %%
     
 
     % umbrales para discernir simbolos parte real
-    i = a(1,:);
+    i = a{1};
     dsr = abs(i(1)-i(2))/2; % distancia entre simbolo parte real
     ur = i - dsr;
     
     % umbrales para discernir simbolos parte imag
-    q = a(2,:);
+    q = a{2};
     dsi = abs(i(1)-i(2))/2; % distancia entre simbolo parte imag
     ui = q - dsi;
         
