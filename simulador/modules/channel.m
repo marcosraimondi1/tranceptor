@@ -14,6 +14,7 @@ function [odata] = channel(config)
     %   - odata.out : signal with AWGN
     %% Parameters
     M = config.M;
+    BR = config.BR;
     NOSF = config.NOSF;
     select_orden = config.select_orden;
     NTAPS = config.N;
@@ -21,6 +22,7 @@ function [odata] = channel(config)
     EbNo = config.EbNo;
     p = config.signal;
     k = log2(M);
+    carrier_error = config.carrier_error;
     
     %% Noise Generator 
     % 1) SNR
@@ -62,10 +64,15 @@ function [odata] = channel(config)
         noise_out = r_out2;
     end
 
-    % Carrier Error
-    carrier_error = config.carrier_error;
-    rot = exp(1j*carrier_error);
-    out = noise_out .* rot;
+    %% Carrier Error
+    if config.carrier_error_type == "frequency"    
+        t = (0:length(p)-1)*1/BR;
+        rot = exp(1j*2*pi*carrier_error*t);
+    else
+        rot = exp(1j*carrier_error);
+    end
+    
+    out = noise_out .* rot.';
 
     %% PLOTS
     if config.debug == 1

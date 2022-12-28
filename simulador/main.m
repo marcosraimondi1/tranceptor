@@ -47,6 +47,7 @@ function [odata] = main(config,bits)
     %% Channel
     % config
     ch_config = config.channel;
+    ch_config.BR = tx_config.BR;
     ch_config.M = tx_config.M;
     ch_config.NOSF = tx_config.NOSF;
     ch_config.signal = tx_odata.out;
