@@ -36,7 +36,23 @@ Ki            = config.Ki;      % ganancia integral
 L             = config.L;       % delay de realimentacion
 
 symbols = qammod(0:M-1,M);                          % posibles simbolos a detectar
-a = [unique(real(symbols)); unique(imag(symbols))]; % parte real e imag de simbolos
+a = {unique(real(symbols)); unique(imag(symbols))}; % parte real e imag de simbolos
+CMA_R = sqrt(mean(abs(symbols).^4)/mean(abs(symbols).^2));    % CMA ref value
+max_real = max(a{1});
+max_imag = max(a{2});
+
+if debug == 1
+    % Circunferencia: r^2 = x^2 + y^2
+    x = linspace(-CMA_R, CMA_R, 100);
+    y = sqrt(CMA_R^2 - x.^2);
+    figure
+    grid on
+    hold on
+    plot(real(symbols), imag(symbols), 'x', 'markersize',8, 'linewidth',2)
+    plot(x,y, '--r', 'linewidth',2)
+    plot(x,-y, '--r', 'linewidth',2)
+    legend("Tx symbols", "CMA Ref")
+end 
 
 %% FSE
 
@@ -44,9 +60,6 @@ Xbuffer = zeros(NTAPS,1);           % Buffer del ecualizador
 W = zeros(1,NTAPS);                 % Coeficientes
 W((NTAPS+1)/2) = 1;                 % Inicializando un valor
 m = 0;
-
-% CMA
-CMA_R = sqrt(mean(signal.^4)/mean(signal.^4));  % CMA ref value
 
 % FCR
 FCR_Buffer = zeros(1,L);        % buffer de realimentacion 
@@ -59,6 +72,7 @@ PHASE_OUT = zeros(1,Lsim_downsample);  % fase recuperada
 EQ_OUT = zeros(1,Lsim_downsample);     % salida ecualizador 
 SLICER_OUT = zeros(1,Lsim_downsample); % salida del sistema
 ERROR = zeros(1,Lsim_downsample);      % salida de error
+
 
 %% Ecualizacion
 
@@ -147,8 +161,8 @@ for n=1:length(signal)-NTAPS-1
         plot(real(EQ_OUT(m-450:m)),imag(EQ_OUT(m-450:m)),'.')
         grid on
         title("Live Constelation FSE OUT")
-        xlim([-2 2])
-        ylim([-2 2])
+        xlim([-max_real-1 max_real+1])
+        ylim([-max_imag-1 max_imag+1])
     end
 end
 
