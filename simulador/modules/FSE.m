@@ -41,19 +41,6 @@ CMA_R = sqrt(mean(abs(symbols).^4)/mean(abs(symbols).^2));    % CMA ref value
 max_real = max(a{1});
 max_imag = max(a{2});
 
-if debug == 1
-    % Circunferencia: r^2 = x^2 + y^2
-    x = linspace(-CMA_R, CMA_R, 100);
-    y = sqrt(CMA_R^2 - x.^2);
-    figure
-    grid on
-    hold on
-    plot(real(symbols), imag(symbols), 'x', 'markersize',8, 'linewidth',2)
-    plot(x,y, '--r', 'linewidth',2)
-    plot(x,-y, '--r', 'linewidth',2)
-    legend("Tx symbols", "CMA Ref")
-end 
-
 %% FSE
 
 Xbuffer = zeros(NTAPS,1);           % Buffer del ecualizador
@@ -158,14 +145,47 @@ for n=1:length(signal)-NTAPS-1
     % Para los plots en tiempo real
     if debug == 1 && mod(n,refresh_rate) == 0
         figure(3)
-        plot(real(EQ_OUT(m-450:m)),imag(EQ_OUT(m-450:m)),'.')
+        plot(real(EQ_OUT(1:end)), '.')
+        % plot(real(EQ_OUT(m-450:m)),imag(EQ_OUT(m-450:m)),'.')
         grid on
         title("Live Constelation FSE OUT")
-        xlim([-max_real-1 max_real+1])
+        % xlim([-max_real-1 max_real+1])
         ylim([-max_imag-1 max_imag+1])
+        
+        
+        
     end
 end
+if debug == 1
+    C = fftshift(fft(W,NFFT));      % FFEq
+    
+    % Circunferencia: r^2 = x^2 + y^2
+    x = linspace(-CMA_R, CMA_R, 100);
+    y = sqrt(CMA_R^2 - x.^2);
+    
+    figure
+    title("Referencia CMA")
+    grid on
+    hold on
+    plot(real(symbols), imag(symbols), 'x', 'markersize',15, 'linewidth',5)
+    plot(x,y, '--r', 'linewidth',2)
+    plot(x,-y, '--r', 'linewidth',2)
+    legend("Tx symbols", "CMA Ref")
+    
+    figure
+    hold on
+    title('Eq Freq Response')
+    plot(abs(C), '--m','linewidth',2)
+    grid on
 
+    figure
+    hold on
+    title('Error Evolution')
+    plot(abs(ERROR))
+    grid on
+
+
+end
 %% Module Output
 odata.FSE_coefficients = W;     % eq. coefficients
 odata.EQ_OUT = EQ_OUT;          % eq. output
