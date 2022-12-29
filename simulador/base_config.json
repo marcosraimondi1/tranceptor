@@ -29,7 +29,7 @@
             "NTAPS": 27,
             "leak_const": 1.5e-7,
             "refresh_rate": 5000,
-            "learning_step": 0.1e-3,
+            "learning_step": 0.5e-4,
             "Kp": 0.1,
             "Ki": 0.005,
             "L": 1,
