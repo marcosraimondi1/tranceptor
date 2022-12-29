@@ -56,6 +56,7 @@ theta_out = 0;
 %% LOGS
 Lsim_downsample = (length(signal)-NTAPS-1)/2;
 PHASE_OUT = zeros(1,Lsim_downsample);  % fase recuperada
+ERROR_I = zeros(1,Lsim_downsample);    % error de la rama integral FCR
 EQ_OUT = zeros(1,Lsim_downsample);     % salida ecualizador 
 SLICER_OUT = zeros(1,Lsim_downsample); % salida del sistema
 ERROR = zeros(1,Lsim_downsample);      % salida de error
@@ -85,8 +86,9 @@ for n=1:length(signal)-NTAPS-1
 
             % Feedback
             FCR_Buffer = [FCR_Buffer(2:end),theta_out];
-            
+
             EQ_OUT(m) = y_fcr;
+            ERROR_I(m) = error_i;
             SLICER_OUT(m) = slicer_out;
 
             if CMA_FCR_timer < 0
@@ -127,8 +129,33 @@ for n=1:length(signal)-NTAPS-1
         grid on
         title("Live Constelation FSE OUT")
         xlim([-max_real-1 max_real+1])
-        ylim([-max_imag-1 max_imag+1])
-        
+        ylim([-max_imag-1 max_imag+1]) 
+    end
+    if debug == 1
+        if m == 1500
+            figure
+            plot(real(EQ_OUT(m-1000:m)),imag(EQ_OUT(m-1000:m)),'.')
+            grid on
+            title("INICIO ETAPA 1")
+            xlim([-max_real-1 max_real+1])
+            ylim([-max_imag-1 max_imag+1])
+        end
+        if CMA_timer == 0
+            figure
+            plot(real(EQ_OUT(m-1000:m)),imag(EQ_OUT(m-1000:m)),'.')
+            grid on
+            title("FIN ETAPA 1 - INICIO ETAPA 2")
+            xlim([-max_real-1 max_real+1])
+            ylim([-max_imag-1 max_imag+1])
+        end
+        if CMA_FCR_timer == 0
+            figure
+            plot(real(EQ_OUT(m-1000:m)),imag(EQ_OUT(m-1000:m)),'.')
+            grid on
+            title("FIN ETAPA 2")
+            xlim([-max_real-1 max_real+1])
+            ylim([-max_imag-1 max_imag+1])
+        end
     end
 end
 if debug == 1
@@ -159,6 +186,11 @@ if debug == 1
     plot(abs(ERROR))
     grid on
 
+    figure
+    hold on
+    title("Error Integral - FCR")
+    grid on
+    plot(ERROR_I)
 
 end
 %% Module Output

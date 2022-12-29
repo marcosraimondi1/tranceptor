@@ -1,9 +1,7 @@
-%% Ejercicio 4
-% trazar curvas de BER vs EbNo y
-% curvas de penalidad vs ancho de banda
-% en los siguientes casos:
-% A) limitacion de BW antes del ruido
-% B) limitacion de BW despues del ruido
+%% Ejercicio 1 - TP6
+% a) Plotear constelacion de y[k] al principio y final de la etapa 1
+% b) Plotear constelacion de y_FCR[k] al principio y final de la etapa 2
+% c) Plotear la evolucion de la rama integral del CR
 clc;clearvars;close all;
 % Levantado de Configuracion
 config = readjson('base_config.json');
