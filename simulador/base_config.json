@@ -13,31 +13,32 @@
       },
       
       "channel" : {
-         "fc": 0.6,
+         "fc": 1,
          "N": 4,
          "select_orden": 2,
-         "EbNo":9,
-         "carrier_error_type": "frequency",
-         "carrier_error": -150e6,
+         "EbNo":100,
+         "carrier_error_type": "p",
+         "carrier_error": 1.5708,
          "debug":0
       },
       
       "receptor": {
          "FSE":{
-            "CMA_timer": 40e3,
+            "CMA_timer": 50e3,
             "CMA_FCR_timer": 50e3,
             "NTAPS": 27,
             "leak_const": 1.5e-7,
-            "refresh_rate": 5000,
+            "refresh_rate": 3000,
             "learning_step": 0.5e-4,
             "Kp": 0.1,
             "Ki": 0.005,
             "L": 1,
-            "debug": 1
+            "debug": 0
          },
          "agc_target": 1,
          "crop_percentage":40,
-         "debug":0
+         "umbral": 5e4,
+         "debug":1
       }
 
    },

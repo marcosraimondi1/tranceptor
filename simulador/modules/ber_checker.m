@@ -1,10 +1,10 @@
 function [odata] = ber_checker(config)
 % ber_checker; alinear entradas y salida y calcular errores
-% parámetros, struct config con:
+% parï¿½metros, struct config con:
 %   - crop_percentage: porcentaje de recorte para evitar transitorio
 %   - bitsOut: bits recibidos en el receptor
 %   - bitsIn: bits transmitidos
-%% Parameters    
+    %% Parameters    
     crop_percentage = config.crop_percentage;    
     bitsOut = config.bitsOut;
     bitsIn = config.bitsIn;

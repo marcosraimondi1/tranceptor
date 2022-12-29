@@ -13,9 +13,9 @@ bits = randi([0 1], 1, test_config.frameSize); % simulation bits
 odata = main(sim_config, bits);
 
 % Guardado de Datos
-fileName = test_config.fileName;
-folderName= sprintf(test_config.folderName,sim_config.transmisor.M,sim_config.channel.EbNo,sim_config.transmisor.rolloff);
-savedata(folderName,fileName,odata);
-
+% fileName = test_config.fileName;
+% folderName= sprintf(test_config.folderName,sim_config.transmisor.M,sim_config.channel.EbNo,sim_config.transmisor.rolloff);
+% savedata(folderName,fileName,odata);
+% 
 % Lectura de Datos
-datar = readdata(folderName,fileName);
+% datar = readdata(folderName,fileName);

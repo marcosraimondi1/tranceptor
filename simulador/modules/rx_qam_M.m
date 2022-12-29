@@ -48,6 +48,13 @@ function [odata] = rx_qam_M(config)
     delay = finddelay(x_mod, ak); % cuantos simbolos esta atrasado ak respecto de x_mod
     ak = ak(1+delay:end);
 
+    %% Cycle Slip Correction
+    csc_config.umbral = config.umbral;
+    csc_config.tx = x_mod;
+    csc_config.rx = ak;
+    csc_config.debug = config.debug;
+    csc_out = CSC(csc_config);
+
     %% M-AM Demapper
     dataSymbolsOut = qamdemod(ak, M);
     dataOutMatrix = de2bi(dataSymbolsOut).';

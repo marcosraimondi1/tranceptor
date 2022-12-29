@@ -131,7 +131,7 @@ for n=1:length(signal)-NTAPS-1
         xlim([-max_real-1 max_real+1])
         ylim([-max_imag-1 max_imag+1]) 
     end
-    if debug == 1
+    if debug == 53
         if m == 1500
             figure
             plot(real(EQ_OUT(m-1000:m)),imag(EQ_OUT(m-1000:m)),'.')
