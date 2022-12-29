@@ -1,0 +1,51 @@
+%% Test 1
+% - Modulacion QPSK
+% - considerar limitacion de BW despues del ruido
+% - Trazar curvas de BER vs EbNo para distintos step size del FSE
+% - Plotear varias curvas de penalidad vs NTAPS_FSE parametrizadas 
+% por el STEP_SIZE
+
+% Barrer BER vs EbNo y hacerlo para diferentes steps y diferentes numeros
+% de coeficientes
+clc;clearvars;close all;
+%% 
+% Levantado de Configuracion
+config = readjson('config.json');
+sim_config = config.simulator; 
+test_config = config.test;
+
+%% Parametros de Barrido
+fileName = test_config.fileName;
+folderNameT = test_config.folderName; % template
+EbnoMax = test_config.EbnoMax;
+EbnoMin = test_config.EbnoMin;
+EbnoStep = test_config.EbnoStep;
+
+frameSize = test_config.frameSize;  % largo de simulacion
+EbnoVec = EbnoMin:EbnoStep:EbnoMax; % vector de EbNo
+
+%% BER simulada
+for n = 1:length(EbnoVec)
+    EbNo = EbnoVec(n); % nuevo EbNo
+    sim_config.channel.EbNo = EbNo;
+
+    % bits
+    bits = randi([0 1], 1, frameSize);
+
+    % transceptor
+    odata = main(sim_config, bits);
+
+    % ber
+    ber_sim = odata.errorData(1)/odata.errorData(2);
+
+    % segun el libro <<BER_LEE.PNG>>
+    ... the Q-function is the tail distribution 
+    ... function of the standard normal distribution
+%             b = log2(M);
+%             ber_lee = 4/b*(1-2^(-b/2))*qfunc(sqrt(3*b*10^(EbNo/10)/(2^b-1)));
+    % guardar informacion
+    odata.ber_sim = ber_sim;
+    folderName = sprintf(folderNameT,sim_config.transmisor.M,sim_config.channel.EbNo);
+    savedata(folderName,fileName,odata);
+end
+

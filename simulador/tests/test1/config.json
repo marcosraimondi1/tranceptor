@@ -1,0 +1,52 @@
+{
+   "simulator":{
+
+      "NFFT":1024,
+      
+      "transmisor" : {
+         "M":4,
+         "NOSF":2,
+         "span":20,
+         "BR":16e9,
+         "rolloff":0.2,
+         "debug":0
+      },
+      
+      "channel" : {
+         "fc": 1,
+         "N": 4,
+         "select_orden": 2,
+         "EbNo":8,
+         "carrier_error_type": "phase",
+         "carrier_error": 0,
+         "debug":0
+      },
+      
+      "receptor": {
+         "FSE":{
+            "CMA_timer": 40e3,
+            "CMA_FCR_timer": 50e3,
+            "NTAPS": 27,
+            "leak_const": 1.5e-7,
+            "refresh_rate": 5000,
+            "learning_step": 0.5e-4,
+            "Kp": 0.1,
+            "Ki": 0.005,
+            "L": 1,
+            "debug": 0
+         },
+         "agc_target": 1,
+         "crop_percentage":30,
+         "debug":0
+      }
+
+   },
+   "test":{
+      "frameSize":0.5e6,
+      "EbnoMax":11,
+      "EbnoMin":7,
+      "EbnoStep":0.25,
+      "fileName":"ber.dat",
+      "folderName":"results/M%i_EbNo%.2fdB"
+   }
+}

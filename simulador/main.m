@@ -31,7 +31,7 @@ function [odata] = main(config,bits)
 %          "debug":0
 %       }
 %    }
-% 
+%   odata = [cantidad de errores, cantidad de bits]
 
     %% TX
     % config
