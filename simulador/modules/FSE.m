@@ -198,7 +198,7 @@ odata.FSE_coefficients = W;     % eq. coefficients
 odata.EQ_OUT = EQ_OUT;          % eq. output
 odata.SLICER_OUT = SLICER_OUT;  % symbols detected
 odata.ERROR = ERROR;            % error evolution
-
+odata.ERROR_I = ERROR_I;        % error integral
 
 end
 

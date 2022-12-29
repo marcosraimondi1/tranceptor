@@ -1,9 +1,5 @@
-%% Test 1
-% - Modulacion QPSK
-% - considerar limitacion de BW despues del ruido
-% - Trazar curvas de BER vs EbNo para distintos step size del FSE
-% - Plotear varias curvas de penalidad vs NTAPS_FSE parametrizadas 
-% por el STEP_SIZE
+%% Test 1 - Ejercicio 2
+% - BER vs EbNo con canal B2B
 
 % Barrer BER vs EbNo y hacerlo para diferentes steps y diferentes numeros
 % de coeficientes

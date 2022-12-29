@@ -31,7 +31,7 @@ function [odata] = main(config,bits)
 %          "debug":0
 %       }
 %    }
-%   odata = [cantidad de errores, cantidad de bits]
+%   odata = [cantidad de errores, cantidad de bits, error integral]
 
     %% TX
     % config
@@ -84,5 +84,6 @@ function [odata] = main(config,bits)
     
     %% OUTPUT
     odata = ber_odata;
+    odata.ERROR_I = rx_odata.ERROR_I;
 end
 

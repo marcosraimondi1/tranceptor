@@ -13,12 +13,12 @@
       },
       
       "channel" : {
-         "fc": 0.6,
+         "fc": 1,
          "N": 4,
          "select_orden": 2,
          "EbNo":9,
          "carrier_error_type": "frequency",
-         "carrier_error": -150e6,
+         "carrier_error": 100e6,
          "debug":0
       },
       
@@ -33,17 +33,18 @@
             "Kp": 0.1,
             "Ki": 0.005,
             "L": 1,
-            "debug": 1
+            "debug": 0
          },
          "agc_target": 1,
-         "crop_percentage":40,
+         "crop_percentage":30,
          "debug":0
       }
 
    },
-   "test":{
+   "test":{   
+      "carrier_errors": [-150e6, -100e6, -50e6, 50e6, 100e6, 150e6],
       "frameSize":0.5e6,
-      "fileName":"ber.dat",
-      "folderName":"results/M%i_EbNo%idB_rolloff_%.1f"
+      "fileName":"errorI.mat",
+      "folderName":"results/M%i_EbNo%idB_CE%dHz"
    }
 }

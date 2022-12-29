@@ -55,6 +55,7 @@ function [odata] = rx_qam_M(config)
 
     %% Output
     odata.bitsOut = bitsOut;
+    odata.ERROR_I = FSE_odata.ERROR_I;
     
     %% PLOTS
     if config.debug == 1

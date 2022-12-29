@@ -1,6 +1,4 @@
 %% Process Test 1
-% Barrer BER vs EbNo y hacerlo para diferentes steps y diferentes numeros
-% de coeficientes
 clc;clearvars;close all;
 
 % Levantado de Configuracion
