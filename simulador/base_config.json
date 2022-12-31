@@ -33,7 +33,7 @@
             "Kp": 0.1,
             "Ki": 0.005,
             "L": 1,
-            "debug": 0
+            "debug": 1
          },
          "agc_target": 1,
          "crop_percentage":40,
