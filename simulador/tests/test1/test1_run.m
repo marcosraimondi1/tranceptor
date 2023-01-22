@@ -19,9 +19,21 @@ EbnoStep = test_config.EbnoStep;
 
 frameSize = test_config.frameSize;  % largo de simulacion
 EbnoVec = EbnoMin:EbnoStep:EbnoMax; % vector de EbNo
-
+maxSymbols = 10; % number of symbols represent 100%
+max = length(EbnoVec);
 %% BER simulada
 for n = 1:length(EbnoVec)
+    actual_percentage = fix(n*100/max);
+    completed_symbols = fix(actual_percentage*maxSymbols/100);
+    loading_bar = "";
+    for y = 1:maxSymbols
+        if y < completed_symbols
+            loading_bar = loading_bar + char(9899);
+        else
+            loading_bar = loading_bar + char(9898);
+        end            
+    end
+    fprintf("%s %i completed\n",loading_bar,actual_percentage)
     EbNo = EbnoVec(n); % nuevo EbNo
     sim_config.channel.EbNo = EbNo;
 

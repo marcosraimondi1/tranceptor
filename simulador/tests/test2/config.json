@@ -37,6 +37,7 @@
          },
          "agc_target": 1,
          "crop_percentage":30,
+         "umbral": 5e4,
          "debug":0
       }
 

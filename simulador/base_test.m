@@ -12,10 +12,22 @@ test_config = config.test;
 bits = randi([0 1], 1, test_config.frameSize); % simulation bits
 odata = main(sim_config, bits);
 
-% Guardado de Datos
-% fileName = test_config.fileName;
-% folderName= sprintf(test_config.folderName,sim_config.transmisor.M,sim_config.channel.EbNo,sim_config.transmisor.rolloff);
-% savedata(folderName,fileName,odata);
-% 
-% Lectura de Datos
-% datar = readdata(folderName,fileName);
+% error integral evolution
+error_i = odata.rx.ERROR_I;
+
+%% Guardado de Datos
+fileName = test_config.fileName;
+folderName= sprintf(test_config.folderName,sim_config.transmisor.M,sim_config.channel.EbNo,sim_config.transmisor.rolloff);
+file_path = strcat("./",folderName,"/",fileName);
+mkdir(folderName)
+save(file_path, 'error_i')
+
+%% Carga de Datos
+% load(file_path)
+figure
+hold on
+grid on
+title("ERROR INTEGRAL - FCR")
+plot(error_i*1.25e3)
+legend(sprintf("%d MHz", sim_config.channel.carrier_error/1e6))
+ylabel("MHz")

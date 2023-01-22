@@ -26,24 +26,25 @@
          "FSE":{
             "CMA_timer": 40e3,
             "CMA_FCR_timer": 50e3,
-            "NTAPS": 27,
+            "NTAPS": 101,
             "leak_const": 1.5e-7,
             "refresh_rate": 5000,
-            "learning_step": 0.5e-4,
-            "Kp": 0.1,
-            "Ki": 0.005,
-            "L": 1,
+            "learning_step": 0.15e-3,
+            "Kp": 0.05,
+            "Ki": 0.0001,
+            "L": 0,
             "debug": 0
          },
          "agc_target": 1,
-         "crop_percentage":30,
+         "crop_percentage":50,
+         "umbral": 5e4,
          "debug":0
       }
 
    },
    "test":{
-      "frameSize":0.5e6,
-      "EbnoMax":11,
+      "frameSize":0.7e6,
+      "EbnoMax":10,
       "EbnoMin":7,
       "EbnoStep":0.25,
       "fileName":"ber.dat",

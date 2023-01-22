@@ -60,7 +60,7 @@ ERROR_I = zeros(1,Lsim_downsample);    % error de la rama integral FCR
 EQ_OUT = zeros(1,Lsim_downsample);     % salida ecualizador 
 SLICER_OUT = zeros(1,Lsim_downsample); % salida del sistema
 ERROR = zeros(1,Lsim_downsample);      % salida de error
-
+theta_out = 0;
 
 %% Ecualizacion
 
@@ -80,13 +80,23 @@ for n=1:length(signal)-NTAPS-1
 
         if CMA_timer < 0
             % FCR
-            phase_out(m) = FCR_Buffer(1);   % salida de fase
+            if L == 0
+                % no delay
+                FCR_Buffer = theta_out;
+            end
             
-            [y_fcr, rot, theta_out, error_i, slicer_out] = FCR(yeq,phase_out(m),theta_out,error_i,Kp,Ki,a);
+            PHASE_OUT(m) = FCR_Buffer(1);   % salida de fase
+            
+            [y_fcr, rot, theta_out, error_i, slicer_out] = FCR(yeq,PHASE_OUT(m),theta_out,error_i,Kp,Ki,a);
 
             % Feedback
             FCR_Buffer = [FCR_Buffer(2:end),theta_out];
-
+            
+            if L == 0
+                % no delay
+                FCR_Buffer = theta_out;
+            end
+            
             EQ_OUT(m) = y_fcr;
             ERROR_I(m) = error_i;
             SLICER_OUT(m) = slicer_out;
@@ -114,7 +124,6 @@ for n=1:length(signal)-NTAPS-1
 
     else
         % Upsample
-        ek = 0;
         grad = 0;
     end
        

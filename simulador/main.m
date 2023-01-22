@@ -84,6 +84,6 @@ function [odata] = main(config,bits)
     
     %% OUTPUT
     odata = ber_odata;
-    odata.ERROR_I = rx_odata.ERROR_I;
+    odata.rx = rx_odata;
 end
 

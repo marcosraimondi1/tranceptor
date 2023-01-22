@@ -20,7 +20,22 @@ EbnoVec = EbnoMin:EbnoStep:EbnoMax; % vector de EbNo
 ber_simulada = zeros(1,length(EbnoVec));
 ber_teo = zeros(1,length(EbnoVec));
 
+maxSymbols = 10; % number of symbols represent 100%
+max = length(EbnoVec);
+
 for n = 1:length(EbnoVec)
+    actual_percentage = fix(n*100/max);
+    completed_symbols = fix(actual_percentage*maxSymbols/100);
+    loading_bar = "";
+    for y = 1:maxSymbols
+        if y < completed_symbols
+            loading_bar = loading_bar + char(9899);
+        else
+            loading_bar = loading_bar + char(9898);
+        end            
+    end
+    fprintf("%s %i completed\n",loading_bar,actual_percentage)
+    
     EbNo = EbnoVec(n);
     folderName = sprintf(folderNameT,sim_config.transmisor.M,EbNo);
     data = readdata(folderName,fileName);
